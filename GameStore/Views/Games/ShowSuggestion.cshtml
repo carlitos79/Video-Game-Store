@@ -1,0 +1,51 @@
+﻿@model GameStore.Models.Game
+
+@{
+    ViewData["Title"] = "ShowSuggestion";
+}
+
+<body background="/images/landscape.png">
+
+    <div>
+        <h2><span class="glyphicon glyphicon-info-sign"></span> Others also bought!</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dd>
+                <img src="~/images/@Model.GameImage" align="middle"/>
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Genre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Genre)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UnitsInStock)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="SendToCreateCart" asp-route-id="@Model.ID"><p>Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></p></a>
+    </div>
+</body>

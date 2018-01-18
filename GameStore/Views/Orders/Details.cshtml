@@ -1,0 +1,66 @@
+﻿@model GameStore.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<body background="/images/landscape.png">
+
+    <h2>Order Confirmation</h2>
+
+    <h3>Thank you @Html.DisplayFor(model => model.FirstName) for prefering us!</h3>
+
+    <h4><span class="glyphicon glyphicon-info-sign"></span> Your Order Id is @Html.DisplayFor(model => model.OrderId), use it to check you order at anytime in our store</h4>
+
+    <div>
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PostalCode)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt><br />
+                @Html.DisplayNameFor(model => model.Total)
+            </dt>
+            <dd><br />
+                @Html.DisplayFor(model => model.Total)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderCreationDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrderCreationDate)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="SendBackToStore">Confirm</a>
+    </div>
+</body>

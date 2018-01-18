@@ -1,0 +1,52 @@
+﻿@model GameStore.Models.Game
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<body background="/images/landscape.png">
+
+    <h2>Game Details</h2>
+
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                <img src="~/images/@Model.GameImage" />
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd>
+                <h1>
+                    @Html.DisplayFor(model => model.Title)
+                </h1>
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Genre)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Genre)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UnitsInStock)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="SendToCreateCart" asp-route-id="@Model.ID"><p>Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></p></a>
+    </div>
+</body>

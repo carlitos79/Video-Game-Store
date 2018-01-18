@@ -1,0 +1,36 @@
+﻿@model GameStore.Models.OrderCartViewModel
+
+@{
+    ViewData["Title"] = "ShowPreviousOrder";
+}
+
+<body background="/images/landscape.png">
+
+    <h2>Previous Order Information</h2>
+
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ReceiverFirstName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ReceiverFirstName)  @Html.DisplayFor(model => model.ReceiverLastname)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderCreationDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrderCreationDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Total)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Total)
+            </dd>
+        </dl>
+        <a asp-action="SendBackToStore"><p>Purchase Some New Games <span class="glyphicon glyphicon-dashboard"></span></p></a>
+    </div>
+</body>
+

@@ -1,0 +1,22 @@
+﻿@model GameStore.Models.Cart
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<body background="/images/landscape.png">
+
+    <h2>Delete Game</h2>
+
+    <h3>Are you sure you don't want to buy @Html.DisplayFor(model => model.GameTitle)?</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal"></dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="CartId" />
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="ShowCarts">Back to Cart</a>
+        </form>
+    </div>
+</body>

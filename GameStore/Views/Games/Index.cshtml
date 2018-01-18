@@ -1,0 +1,69 @@
+﻿@model IEnumerable<GameStore.Models.Game>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<body background="/images/landscape.png">
+
+    <p align="center">
+        <img src="~/images/logo.png" height="400" width="800" />
+    </p>
+
+    <h2></h2>
+
+    <style>
+        h1 {
+            font-size: 19px;
+        }
+    </style>
+
+    <style>
+        h2 {
+            font-size: 15px;
+        }
+    </style>
+
+    <form asp-controller="Games" asp-action="Index">
+        <p align="left">
+            <input type="text" name="SearchString">
+            <input type="submit" value="Search Game" /> <span class="glyphicon glyphicon-search"></span>
+        </p>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="~/images/@item.GameImage" />
+                        <h1>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </h1>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ID">Game Details</a>
+
+                        @if (item.UnitsInStock == 0)
+                        {                            
+                            <p style="color:dimgrey">Game not available</p>
+                        }
+                        else
+                        {
+                        <a asp-action="SendToCreateCart" asp-route-id="@item.ID"><p>Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></p></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>

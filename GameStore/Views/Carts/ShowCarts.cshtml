@@ -1,0 +1,76 @@
+﻿@model IEnumerable<GameStore.Models.Cart>
+
+@{
+    ViewData["Title"] = "ShowCarts";
+}
+
+<body background="/images/landscape.png">
+
+    <h2>Your Cart <span class="glyphicon glyphicon-shopping-cart"></span></h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.GameTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Total)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GameTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.CartId"><span class="glyphicon glyphicon-minus-sign" style="color:cornflowerblue"></span></a>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                        @if (item.CanAdd == false)
+                        {
+                            <p class="glyphicon glyphicon-plus-sign" style="color:dimgrey"></p>
+                        }
+                        else
+                        {
+                            <a asp-action="AddToCart" asp-route-id="@item.GameId"><span class="glyphicon glyphicon-plus-sign" style="color:cornflowerblue"></span></a>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                    <td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @foreach (var item in Model)
+    {
+        if (item.Equals(Model.Last()))
+        {
+            <h5><b>Total: </b> @Html.DisplayFor(modelItem => item.FinalTotal)</h5>
+        }
+    }
+
+</body>
+<td>
+    <a asp-action="SendToCreateOrder">Checkout <span class="glyphicon glyphicon-arrow-right"></span></a> |
+    <a asp-action="SendBackToStore">Back To Store <span class="glyphicon glyphicon-dashboard"></span></a> |
+    <a asp-action="SendToSuggestion"><span class="glyphicon glyphicon-info-sign"></span> Game Suggestion</a> |
+    <a asp-action="EmptyCart">Empty Cart <span class="glyphicon glyphicon-trash"></span></a>
+</td>

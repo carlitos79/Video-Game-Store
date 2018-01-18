@@ -1,0 +1,16 @@
+﻿@model IEnumerable<GameStore.Models.Order>
+
+@{
+    ViewData["Title"] = "PreviousOrder";
+}
+
+<body background="/images/landscape.png">
+    <h2>Enter Order No.</h2>
+
+    <form asp-controller="Orders" asp-action="PreviousOrder">
+        <p align="left">
+            <input name="id">
+            <input type="submit" value="Search Order" /> <span class="glyphicon glyphicon-search"></span>
+        </p>
+    </form>
+</body>
