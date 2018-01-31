@@ -18,8 +18,7 @@ namespace GameStore
                 var services = scope.ServiceProvider;
 
                 try
-                {
-                    // Requires using MvcMovie.Models;
+                {                    
                     SeedData.Initialize(services);
                 }
                 catch (Exception ex)

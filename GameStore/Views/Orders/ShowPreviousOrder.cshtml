@@ -23,6 +23,26 @@
             <dd>
                 @Html.DisplayFor(model => model.OrderCreationDate)
             </dd>
+
+            <hr />
+            <h4>Games in Order</h4>
+            @foreach (var cart in Model.Carts)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => cart.GameTitle)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => cart.GameTitle)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => cart.UnitPrice)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => cart.UnitPrice)
+                </dd>
+            }
+            <hr />
+
             <dt>
                 @Html.DisplayNameFor(model => model.Total)
             </dt>

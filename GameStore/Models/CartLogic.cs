@@ -40,38 +40,54 @@ namespace GameStore.Models
                         GameTitle = game.Title,
                         Quantity = 1,
                         Count = 0,
-                        OrderDate = DateTime.Now
+                        OrderDate = DateTime.Now,
+                        FinalTotal = game.Price + await GetTotal()
                     };
-
+                    
                     _context.Cart.Add(cartItem);
                 }
                 else
                 {
                     cartItem.Quantity++;
                 }
-                cartItem.Total = game.Price + await GetPreliminaryTotal(cartItem.CartId);
-                cartItem.FinalTotal = game.Price + await GetTotal();
+                
                 cartItem.Count++;
                 cartItem.CanAdd = true;
                 game.UnitsInStock--;
+                cartItem.Total = game.Price + await GetPreliminaryTotal(cartItem.CartId);
             }
             else if (game.UnitsInStock == 0)
             {
-                cartItem.CanAdd = false;                
+                cartItem.CanAdd = false;   
             }
         }
 
-        public void RemoveFromCart(int id)
+        public async Task SetCartTotal()
+        {
+            var carts = from c in _context.Cart
+                        where c.ShoppingCartId == _shoppingCartId
+                        select c;
+
+            foreach (var cart in carts)
+            {
+                cart.FinalTotal = await GetTotal();
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveFromCartAsync(int id)
         {            
             var cartItem = _context.Cart.SingleOrDefault(c => c.ShoppingCartId == _shoppingCartId && c.CartId == id);
             var game = _context.Game.SingleOrDefault(g => g.ID == cartItem.GameId);
+
+            var total = _context.Cart.FirstOrDefault(t => t.ShoppingCartId == _shoppingCartId);
 
             if (cartItem != null)
             {
                 if (cartItem.Quantity > 1)
                 {
                     cartItem.Quantity--;
-                    cartItem.Total -= cartItem.UnitPrice;
+                    cartItem.Total = await GetPreliminaryTotal(cartItem.CartId) - game.Price;
                     cartItem.CanAdd = true;
                 }
                 else
@@ -119,7 +135,7 @@ namespace GameStore.Models
         {
             var items = from t in _context.Cart
                         where t.ShoppingCartId == _shoppingCartId
-                        select t.UnitPrice * t.Quantity;            
+                        select t.UnitPrice * t.Quantity;
 
             return items.SumAsync();
         }
@@ -138,7 +154,7 @@ namespace GameStore.Models
             order.OrderShoppingCartId = _shoppingCartId;
             order.Total = await GetTotal();
             order.OrderCreationDate = DateTime.Now;
-        }
+        }        
 
         public Task<List<Cart>> GetCartItems()
         {

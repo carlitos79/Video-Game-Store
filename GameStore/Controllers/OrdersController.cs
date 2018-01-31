@@ -1,11 +1,9 @@
-﻿using System;
+﻿using GameStore.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GameStore.Models;
 
 namespace GameStore.Controllers
 {
@@ -46,6 +44,17 @@ namespace GameStore.Controllers
         {
             var order = _context.Order.SingleOrDefault(o => o.OrderId == prevOrder.OrderId);
 
+            var carts = from c in _context.Cart
+                        where c.ShoppingCartId == order.OrderShoppingCartId
+                        select c;
+
+            List<Cart> cartList = new List<Cart>();
+
+            foreach (var cart in carts)
+            {
+                cartList.Add(cart);
+            }
+
             OrderCartViewModel viewModel = null;
 
             if (order != null)
@@ -56,28 +65,24 @@ namespace GameStore.Controllers
                     ReceiverLastname = order.LastName,
                     OrderCreationDate = order.OrderCreationDate,
                     PreviousOrderId = order.OrderShoppingCartId,
-                    Total = order.Total
+                    Total = order.Total,
+                    Carts = cartList
                 };
             }
 
             return View(viewModel);
         }
 
-        public async Task<IActionResult> PreviousOrder(int id)
-        {            
-            var order = from o in _context.Order
-                        select o;
+        public IActionResult PreviousOrder(int id, string email)
+        { 
+            var prevOrder = _context.Order.SingleOrDefault(o => o.OrderId == id);
 
-            order = order.Where(o => o.OrderId == id);
-
-            var prevOrder = _context.Order.SingleOrDefault(o => o.OrderId == id);            
-
-            if (id > 0)
+            if (OrderExists(id) && EmailExists(email))
             {
                 return RedirectToAction(nameof(ShowPreviousOrder), prevOrder);
             }
 
-            return View(await order.ToListAsync());
+            return View();
         }        
 
         public IActionResult SendBackToStore()
@@ -104,7 +109,7 @@ namespace GameStore.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(order);
-                await cart.EmptyCart();
+                HttpContext.Session.Clear();
                 await _context.SaveChangesAsync();
             }
 
@@ -170,8 +175,8 @@ namespace GameStore.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
-                .SingleOrDefaultAsync(m => m.OrderId == id);
+            var order = await _context.Order.SingleOrDefaultAsync(m => m.OrderId == id);
+
             if (order == null)
             {
                 return NotFound();
@@ -194,6 +199,11 @@ namespace GameStore.Controllers
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.OrderId == id);
+        }
+
+        private bool EmailExists(string email)
+        {
+            return _context.Order.Any(e => e.Email == email);
         }
     }
 }

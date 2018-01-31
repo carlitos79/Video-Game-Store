@@ -5,12 +5,18 @@
 }
 
 <body background="/images/landscape.png">
-    <h2>Enter Order No.</h2>
+    <h2>Enter Previous Order Information</h2>
 
     <form asp-controller="Orders" asp-action="PreviousOrder">
-        <p align="left">
+
+            <p><b>Order Id</b></p>
             <input name="id">
+            <hr/>
+
+            <p><b>E-Mail</b></p>
+            <input name="email" size="25">
+            <hr />
+
             <input type="submit" value="Search Order" /> <span class="glyphicon glyphicon-search"></span>
-        </p>
     </form>
 </body>

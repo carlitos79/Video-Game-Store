@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GameStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GameStore.Models;
-using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GameStore.Controllers
 {
@@ -39,7 +37,6 @@ namespace GameStore.Controllers
             return RedirectToAction("Create", "Orders");
         }
 
-        // GET: Carts/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -78,8 +75,8 @@ namespace GameStore.Controllers
             var cartToAddTo = CartLogic.GetCart(_context, HttpContext);
 
             await cartToAddTo.AddToCart(gameToAdd);
-            //gameToAdd.UnitsInStock--;
             await _context.SaveChangesAsync();
+            await cartToAddTo.SetCartTotal();
 
             return RedirectToAction(nameof(ShowCarts));
         }
@@ -94,7 +91,6 @@ namespace GameStore.Controllers
             return RedirectToAction(nameof(ShowCarts));
         }
 
-        // GET: Carts/Create
         public IActionResult Create()
         {
             ViewData["GameId"] = new SelectList(_context.Game, "ID", "ID");
@@ -171,7 +167,6 @@ namespace GameStore.Controllers
             return View(cart);
         }
 
-        // GET: Carts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -189,15 +184,15 @@ namespace GameStore.Controllers
             return View(cart);
         }
 
-        // POST: Carts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var cart = CartLogic.GetCart(_context, HttpContext);
 
-            cart.RemoveFromCart(id);
+            await cart.RemoveFromCartAsync(id);
             await _context.SaveChangesAsync();
+            await cart.SetCartTotal();
 
             return RedirectToAction(nameof(ShowCarts));
         }
